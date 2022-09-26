@@ -35,3 +35,4 @@ jobs:
         env:
           GITHUB_USER: ${{ secrets.AWGITHUB_USER }}
           GITHUB_TOKEN: ${{ secrets.AWGITHUB_TOKEN }}
+          KUBECONFIG: "~/.kube/config"
