@@ -21,6 +21,9 @@ jobs:
         env: 
             KUBECONFIGFILE: ${{ secrets.KUBECONFIGFILE }}
 
+      - name: test kubectl
+        run: kubectl version 
+
       # You need to run `dagger project init` locally before and commit the cue.mod directory to the repository with its contents
       - name: Build and Deploy to Azure 
         uses: dagger/dagger-for-github@v3
@@ -36,3 +39,4 @@ jobs:
           GITHUB_USER: ${{ secrets.AWGITHUB_USER }}
           GITHUB_TOKEN: ${{ secrets.AWGITHUB_TOKEN }}
           KUBECONFIG: "$HOME/.kube/config"
+          DAGGER_LOG_LEVEL: "debug"
