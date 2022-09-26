@@ -31,7 +31,7 @@ dagger.#Plan & {
       build: docker.#Dockerfile & {
         // This is the Dockerfile context
         source: client.filesystem."./site".read.contents
-        platforms: ["linux/arm64", "linux/amd64"]
+        //platforms: ["linux/arm64", "linux/amd64"]
       }  
       // Push de l'image
       push: docker.#Push & {
