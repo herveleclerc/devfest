@@ -17,7 +17,7 @@ jobs:
         run: mkdir -p $HOME/.kube
 
       - name: kubeconfig file content
-        run: echo KUBECONFIGFILE >  $HOME/.kube/config
+        run: echo ${KUBECONFIGFILE} >  $HOME/.kube/config
         env: 
             KUBECONFIGFILE: ${{ secrets.KUBECONFIGFILE }}
 
@@ -35,4 +35,4 @@ jobs:
         env:
           GITHUB_USER: ${{ secrets.AWGITHUB_USER }}
           GITHUB_TOKEN: ${{ secrets.AWGITHUB_TOKEN }}
-          KUBECONFIG: "~/.kube/config"
+          KUBECONFIG: "$HOME/.kube/config"
