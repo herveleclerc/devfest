@@ -17,6 +17,7 @@ dagger.#Plan & {
         GITHUB_USER: string
         GITHUB_TOKEN: dagger.#Secret
         KUBECONFIG: string
+        KUBECONFIGFILE: dagger.#Secret
       }
 
       commands: kubeconfig: {
@@ -40,7 +41,7 @@ dagger.#Plan & {
           secret: client.env.GITHUB_TOKEN
         }
         image: build.output // Dépendance avec action build cette acction se déclenchera à la suite de `build`
-        dest: "ghcr.io/herveleclerc/devfestdemo:1.0.0"
+        dest: "ghcr.io/herveleclerc/devfestdemo:1.0.1"
       }
 
       // Génération des manifests de l'application grace au CUE templating
@@ -65,7 +66,8 @@ dagger.#Plan & {
 			  	mounts: {
             kubeconfig: {
 			  		  dest:     "/tmp/.kube/config"
-			  		  contents: client.commands.kubeconfig.stdout
+			  		  //contents: client.commands.kubeconfig.stdout
+              contents: client.env.KUBECONFIGFILE
               type:     "secret"
             }
             manifest: {
