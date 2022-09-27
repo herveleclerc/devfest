@@ -4,7 +4,7 @@ import (
     "dagger.io/dagger"
     "universe.dagger.io/docker"
     "strings"
-    "github.com/herveleclerc/apptpl@v0.1.0" 
+    "github.com/herveleclerc/apptpl" 
 )
 
 dagger.#Plan & {

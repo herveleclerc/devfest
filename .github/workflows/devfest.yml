@@ -19,7 +19,6 @@ jobs:
           version: 0.2
           cmds: |
             project update
-            project update github.com/herveleclerc/apptpl@v0.1.0
             do build
             do push
             do deploy
