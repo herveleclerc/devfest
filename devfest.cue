@@ -4,27 +4,20 @@ import (
     "dagger.io/dagger"
     "universe.dagger.io/docker"
     "strings"
+    "github.com/herveleclerc/apptpl" 
 )
 
 dagger.#Plan & {
     client: {
       filesystem: {
           "./site": read: contents: dagger.#FS
-          //"a.txt": write: contents: actions.deploy.res.contents
       }
       
       env: {
         GITHUB_USER: string
         GITHUB_TOKEN: dagger.#Secret
-        KUBECONFIG: string
         KUBECONFIGFILE: dagger.#Secret
       }
-
-      //commands: kubeconfig: {
-			//  name: "cat"
-	  	//	args: ["\(env.KUBECONFIG)"]
-		  //	stdout: dagger.#Secret
-	  	//}
     }
 
     actions: {
@@ -32,7 +25,6 @@ dagger.#Plan & {
       build: docker.#Dockerfile & {
         // This is the Dockerfile context
         source: client.filesystem."./site".read.contents
-        //platforms: ["linux/arm64", "linux/amd64"]
       }  
       // Push de l'image
       push: docker.#Push & {
@@ -45,7 +37,7 @@ dagger.#Plan & {
       }
 
       // Génération des manifests de l'application grace au CUE templating
-      appmanifest: #AppManifest & {
+      appmanifest: apptpl.#AppManifest & {
         name:  "devfest"
         image: strings.Trim(actions.push.result,"\n")
       }
@@ -66,7 +58,6 @@ dagger.#Plan & {
 			  	mounts: {
             kubeconfig: {
 			  		  dest:     "/tmp/.kube/config"
-			  		  //contents: client.commands.kubeconfig.stdout
               contents: client.env.KUBECONFIGFILE
               type:     "secret"
             }
@@ -83,10 +74,6 @@ dagger.#Plan & {
             }
           }		
 			  }
-			  //res: core.#ReadFile & {
-			  //	input: run.output
-			  //	path:  "/tmp/a.txt"
-			  //}
 		}
       
   }
