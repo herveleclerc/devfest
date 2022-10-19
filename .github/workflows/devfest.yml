@@ -29,4 +29,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.AWGITHUB_TOKEN }}
           KUBECONFIG: "$HOME/.kube/config"
           KUBECONFIGFILE: ${{ secrets.KUBECONFIGFILE }}
-          DAGGER_LOG_LEVEL: "debug"
+          DAGGER_LOG_LEVEL: "error"
