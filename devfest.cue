@@ -21,12 +21,12 @@ dagger.#Plan & {
     }
 
     actions: {
-      // Build de l'image
+      // Build de l'image avec buildkit
       build: docker.#Dockerfile & {
         // This is the Dockerfile context
         source: client.filesystem."./site".read.contents
       }  
-      // Push de l'image
+      // Push de l'image sur la registry de github ghcr.io
       push: docker.#Push & {
         auth: {
           username: client.env.GITHUB_USER
@@ -41,9 +41,8 @@ dagger.#Plan & {
         name:  "devfest"
         image: strings.Trim(actions.push.result,"\n")
       }
-
+      // Déploiement de l'image sur un cluster k8s
       deploy: {
-
         // Conteneur tool
         pull: docker.#Pull & {
           source: "lachlanevenson/k8s-kubectl"
